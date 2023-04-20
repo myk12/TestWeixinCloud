@@ -2,12 +2,23 @@ import json
 import logging
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from wxcloudrun.models import Counters
 
 
 logger = logging.getLogger('log')
 
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if username == 'admin' and 'password' == 'admin':
+            return redirect('/index')
+        else:
+            return render(request, 'login.html', {"error":"Error in password or username."})
+    
+    return render(request, 'login.html')
 
 def index(request, _):
     """
